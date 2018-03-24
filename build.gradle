@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'puzzle15-spring-boot'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    testCompile("junit:junit")
+}
+
+test {
+    //we want display the following test events
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}
+
+springBoot {
+    mainClass = "com.puzzle15.bootstrap.GameStarter"
+}
+
+
+
+
+
+
+// Apply the java-library plugin to add support for Java Library
+//apply plugin: 'java-library'
+
+// In this section you declare where to find the dependencies of your project
+//repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+//    jcenter()
+//}
+//
+//dependencies {
+//    // This dependency is exported to consumers, that is to say found on their compile classpath.
+//    api 'org.apache.commons:commons-math3:3.6.1'
+//
+//    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
+//    implementation 'com.google.guava:guava:21.0'
+//
+//    // Use JUnit test framework
+//    testImplementation 'junit:junit:4.12'
+//    compile 'junit:junit:4.12'
+//    compile 'junit:junit:4.12'
+//}
+
