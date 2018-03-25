@@ -25,7 +25,5 @@ hs_err_pid*
 build/
 .gradle/
 gradle/
-gui.sh
 *.iml
-run.sh
 settings.gradle
