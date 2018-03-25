@@ -22,8 +22,8 @@ Run the following script
 $ ./run.sh
 ```
 
-The project will be built using gradle for the first time so it might take a while at the first time.
-The following will be displayed once build is done. In order to move a tile, just enter its number.:
+The project will be built using gradle so it might take a while only at the first time.
+The following will be displayed once the build is done. In order to move a tile, just enter its number:
 
 ```
   1  2  3  4
