@@ -9,6 +9,12 @@ The game can be run in 2 modes:
 1. Textual UI
 2. Graphical UI
 
+First, clone the repo and change to its directory:
+```
+$ git clone <this-repo>
+$ cd puzzle-15
+```
+
 ### Textual UI
 
 Run the following script
