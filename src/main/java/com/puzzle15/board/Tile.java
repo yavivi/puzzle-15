@@ -1,5 +1,7 @@
 package com.puzzle15.board;
 
+import java.util.Arrays;
+
 /**
  * Created by yavivi on 24/03/2018.
  */
@@ -22,11 +24,16 @@ public enum Tile {
     TILE_16(16); //The empty Tile
 
     private static int misplacedTiles = 0;
+
     static boolean allTilesInPlace(){
         return misplacedTiles == 0;
     }
     static int getMisplacedTiles(){
         return misplacedTiles;
+    }
+    static void resetAll(){
+        Arrays.asList(Tile.values()).stream().forEach(t->t.resetLocation());
+        misplacedTiles=0;
     }
 
     private final int tileNumber;
@@ -34,9 +41,13 @@ public enum Tile {
     private int col = 0;
 
     Tile(int n) {
-        row = (n-1) / 4;
-        col = (n-1) % 4;
         this.tileNumber = n;
+        resetLocation();
+    }
+
+    void resetLocation(){
+        row = (tileNumber-1) / 4;
+        col = (tileNumber-1) % 4;
     }
 
     void swapWith(Tile t){

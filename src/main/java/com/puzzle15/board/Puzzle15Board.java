@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.puzzle15.board.Consts.SIZE;
-import static com.puzzle15.board.Consts.TILE_PREFIX;
 import static com.puzzle15.board.Tile.*;
 
 public class Puzzle15Board {
@@ -21,11 +20,19 @@ public class Puzzle15Board {
 
 	public void shuffle(int shuffles){
 	    Random rand = new Random();
+	    Tile lastMove = null;
         for (int i=0; i<shuffles; i++){
             List<Tile> movableTiles = calculateMovableTiles();             //returns a list of the tiles that are able to move
             int movableTilesCount = movableTiles.size();
             int randomMove = rand.nextInt(100) % movableTilesCount; //Pick a random tile to move
-            swapTiles(EMPTY_TILE, movableTiles.get(randomMove));           //Swap between the empty tile and the chosen tile
+            Tile tileToMove = movableTiles.get(randomMove);
+            if (tileToMove == lastMove){
+                //Dont repeat the last move
+                lastMove = movableTiles.stream().filter(t -> t != tileToMove).findAny().get();
+            } else {
+                lastMove = tileToMove;
+            }
+            swapTiles(EMPTY_TILE, lastMove);           //Swap between the empty tile and the chosen tile
         }
     }
 
@@ -66,6 +73,8 @@ public class Puzzle15Board {
     }
 
     private boolean canMove(Tile tileToMove) {
+        if (tileToMove == EMPTY_TILE) {return false;}
+
 	    int row = tileToMove.getRow();
 	    int col = tileToMove.getCol();
 
@@ -97,5 +106,9 @@ public class Puzzle15Board {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    public void reset() {
+        Tile.resetAll();
     }
 }

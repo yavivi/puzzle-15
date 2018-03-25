@@ -26,6 +26,7 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    testCompile("org.assertj:assertj-core:3.8.0")
     testCompile("junit:junit")
 }
 
