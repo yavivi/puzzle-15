@@ -1,5 +1,6 @@
 package com.puzzle15.command.api;
 
+import com.puzzle15.board.Consts;
 import com.puzzle15.board.Puzzle15Board;
 import com.puzzle15.command.impl.ByeCommand;
 import com.puzzle15.command.impl.MoveTile;
@@ -20,7 +21,11 @@ public class CommandFactory {
 
         switch (commandName) {
             case "shuffle":
-                result = new ShuffleBoard(board, Integer.parseInt(commandArray.get(1)));
+                int shuffles = Consts.DEFAULT_SHUFFLES;
+                try {
+                    shuffles = Integer.parseInt(commandArray.get(1));
+                } catch(Exception e){}
+                result = new ShuffleBoard(board, shuffles);
                 break;
             case "bye":
                 result = new ByeCommand(board, "Bye");

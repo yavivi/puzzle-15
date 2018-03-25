@@ -16,7 +16,7 @@ public class GameStarter {
 
         if (args.length == 1 && "gui".equals(args[0])){
             //Load the graphical UI. Shuffle the board 50 times by default (@ TODO add a shuffle button to GUI)
-            board.shuffle(Consts.GUI_DEFAULT_SHUFFLES);
+            board.shuffle(Consts.DEFAULT_SHUFFLES);
             ui = new GraphicalUI(board);
         } else {
             //Default UI is a Textual UI
