@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CommandFactory {
 
-    public Command<?> createCommand(Puzzle15Board board, String commandLine) {
+    public Command createCommand(Puzzle15Board board, String commandLine) {
         Command<?> result = null;
 
         //Split command line on white spaces of any size
@@ -24,7 +24,7 @@ public class CommandFactory {
                 int shuffles = Consts.DEFAULT_SHUFFLES;
                 try {
                     shuffles = Integer.parseInt(commandArray.get(1));
-                } catch(Exception e){}
+                } catch(Exception e){/*Do Nothing, Default is set*/}
                 result = new ShuffleBoard(board, shuffles);
                 break;
             case "bye":
