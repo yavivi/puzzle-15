@@ -2,7 +2,7 @@
 Implementation of the 15-puzzle game
 
 ## Prerequisite
-Java 8 should be installed
+JDK 8 should be installed
 
 ## Running the game
 The game can be run in 2 modes:
