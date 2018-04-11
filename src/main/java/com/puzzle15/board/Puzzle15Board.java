@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Puzzle15Board {
 
-    private NewTile emptyTile = null;
+    private Tile emptyTile = null;
 
-    private NewTile[][] board = null;
+    private Tile[][] board = null;
     private int misplacedTiles = 0;
-    private Map<String, NewTile> tilesMap = new HashMap();
+    private Map<String, Tile> tilesMap = new HashMap();
 
     private int dim = 4;
 
@@ -22,13 +22,13 @@ public class Puzzle15Board {
 
     private void initBoard(int dim) {
         this.dim = dim;
-        board = new NewTile[dim][dim];
+        board = new Tile[dim][dim];
 
         //Init new board
         int v = 1;
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                board[i][j] = new NewTile(dim, v);
+                board[i][j] = new Tile(dim, v);
                 tilesMap.put(""+v, board[i][j]);
                 v++;
             }
@@ -36,18 +36,18 @@ public class Puzzle15Board {
         this.emptyTile = board[dim-1][dim-1];
     }
 
-    public NewTile getTile(String tileNumber){
+    public Tile getTile(String tileNumber){
         return this.tilesMap.get(tileNumber);
     }
 
     public void shuffle(int shuffles){
 	    Random rand = new Random();
-	    NewTile lastMove = null;
+	    Tile lastMove = null;
         for (int i=0; i<shuffles; i++){
-            List<NewTile> movableTiles = calculateMovableTiles();             //returns a list of the tiles that are able to move
+            List<Tile> movableTiles = calculateMovableTiles();             //returns a list of the tiles that are able to move
             int movableTilesCount = movableTiles.size();
             int randomMove = rand.nextInt(100) % movableTilesCount; //Pick a random tile to move
-            NewTile tileToMove = movableTiles.get(randomMove);
+            Tile tileToMove = movableTiles.get(randomMove);
             if (tileToMove == lastMove){
                 //Dont repeat the last move
                 lastMove = movableTiles.stream().filter(t -> t != tileToMove).findAny().get();
@@ -58,7 +58,7 @@ public class Puzzle15Board {
         }
     }
 
-    public boolean moveTile(NewTile tileToMove) {
+    public boolean moveTile(Tile tileToMove) {
         if (canMove(tileToMove)){
             this.swapTiles(tileToMove, emptyTile);
             return true;
@@ -75,12 +75,12 @@ public class Puzzle15Board {
         return getMisplacedTiles();
     }
 
-    public NewTile getTile(int i, int j) {
+    public Tile getTile(int i, int j) {
         return this.board[i][j];
     }
 
-    private List<NewTile> calculateMovableTiles() {
-	    List<NewTile> result = new ArrayList<>();
+    private List<Tile> calculateMovableTiles() {
+	    List<Tile> result = new ArrayList<>();
 	    if (emptyTile.getCol() < dim-1){
 	        result.add(board[emptyTile.getRow()][emptyTile.getCol()+1]);
         }
@@ -96,7 +96,7 @@ public class Puzzle15Board {
 	    return result;
     }
 
-    private boolean canMove(NewTile tileToMove) {
+    private boolean canMove(Tile tileToMove) {
         if (tileToMove == emptyTile) {return false;}
 
 	    int row = tileToMove.getRow();
@@ -114,7 +114,7 @@ public class Puzzle15Board {
 	    return false;
     }
 
-    private void swapTiles(NewTile t1, NewTile t2){
+    private void swapTiles(Tile t1, Tile t2){
         this.misplacedTiles += t1.swapWith(t2);
         board[t1.getRow()][t1.getCol()] = t1;
         board[t2.getRow()][t2.getCol()] = t2;
@@ -143,7 +143,11 @@ public class Puzzle15Board {
         return misplacedTiles;
     }
 
-    public NewTile getEmptyTile() {
+    public Tile getEmptyTile() {
         return emptyTile;
+    }
+
+    public int getDim(){
+        return dim;
     }
 }

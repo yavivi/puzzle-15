@@ -1,9 +1,7 @@
 package com.puzzle15.command.impl;
 
-import com.puzzle15.board.Consts;
-import com.puzzle15.board.NewTile;
-import com.puzzle15.board.Puzzle15Board;
 import com.puzzle15.board.Tile;
+import com.puzzle15.board.Puzzle15Board;
 import com.puzzle15.command.api.Command;
 import com.puzzle15.command.api.Result;
 
@@ -19,7 +17,7 @@ public class MoveTile extends Command<String> {
 
     @Override
     public Result execute() {
-        NewTile tileToMove = null;
+        Tile tileToMove = null;
         try {
 
             tileToMove = board.getTile(this.commandInput);
