@@ -8,7 +8,7 @@ public class Puzzle15Board {
 
     private Tile[][] board = null;
     private int misplacedTiles = 0;
-    private Map<String, Tile> tilesMap = new HashMap();
+    private Map<String, Tile> tilesMap = new HashMap(); //For easy access to tiles by their number
 
     private int dim = 4;
 

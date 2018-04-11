@@ -13,9 +13,8 @@ public class GameStarter {
     public static void main(String[] args) {
         UI ui = null;
 
-        if (args.length == 0){
+        if (args.length == 0) {
             Puzzle15Board board = new Puzzle15Board(4);
-            //Load the graphical UI. Shuffle the board 50 times by default (@ TODO add a shuffle button to GUI)
             board.shuffle(Consts.DEFAULT_SHUFFLES);
             ui = new GraphicalUI(board);
         } else {
@@ -24,21 +23,28 @@ public class GameStarter {
                 String uiType = args[0];
                 int dim = Integer.parseInt(args[1]);
                 Puzzle15Board board = new Puzzle15Board(dim);
-                switch (uiType){
-                    case "gui":
-                        ui = new GraphicalUI(board);
-                        break;
-                    case "text":
-                        ui = new TextualUI(board);
-                        break;
+
+                if ("gui".equals(uiType)) {
+                    board.shuffle(Consts.DEFAULT_SHUFFLES);
+                    ui = new GraphicalUI(board);
+                } else if ("text".equals(uiType)) {
+                    ui = new TextualUI(board);
                 }
-                ui = new TextualUI(board);
             } catch (Exception e) {
-                System.out.println("Usage: [text|gui] [dimension]");
+                usage();
             }
 
         }
 
-        ui.start();
+        if (ui != null) {
+            ui.start();
+        } else {
+            usage();
+        }
     }
+
+    private static void usage(){
+        System.out.println("Usage: [text|gui] [dimension]");
+    }
+
 }
