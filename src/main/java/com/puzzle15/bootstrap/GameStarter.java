@@ -11,18 +11,40 @@ import com.puzzle15.ui.UI;
 public class GameStarter {
 
     public static void main(String[] args) {
-        Puzzle15Board board = new Puzzle15Board();
         UI ui = null;
 
-        if (args.length == 1 && "gui".equals(args[0])){
-            //Load the graphical UI. Shuffle the board 50 times by default (@ TODO add a shuffle button to GUI)
+        if (args.length == 0) {
+            Puzzle15Board board = new Puzzle15Board(4);
             board.shuffle(Consts.DEFAULT_SHUFFLES);
             ui = new GraphicalUI(board);
         } else {
-            //Default UI is a Textual UI
-            ui = new TextualUI(board);
+
+            try {
+                String uiType = args[0];
+                int dim = Integer.parseInt(args[1]);
+                Puzzle15Board board = new Puzzle15Board(dim);
+
+                if ("gui".equals(uiType)) {
+                    board.shuffle(Consts.DEFAULT_SHUFFLES);
+                    ui = new GraphicalUI(board);
+                } else if ("text".equals(uiType)) {
+                    ui = new TextualUI(board);
+                }
+            } catch (Exception e) {
+                ui = null;
+            }
+
         }
 
-        ui.start();
+        if (ui != null) {
+            ui.start();
+        } else {
+            usage();
+        }
     }
+
+    private static void usage(){
+        System.out.println("Usage: run.sh [text|gui] [dimension]");
+    }
+
 }

@@ -1,93 +1,71 @@
 package com.puzzle15.board;
 
-import java.util.Arrays;
-
 /**
  * Created by yavivi on 24/03/2018.
  */
-public enum Tile {
-    TILE_1(1),
-    TILE_2(2),
-    TILE_3(3),
-    TILE_4(4),
-    TILE_5(5),
-    TILE_6(6),
-    TILE_7(7),
-    TILE_8(8),
-    TILE_9(9),
-    TILE_10(10),
-    TILE_11(11),
-    TILE_12(12),
-    TILE_13(13),
-    TILE_14(14),
-    TILE_15(15),
-    TILE_16(16); //The empty Tile
+public class Tile {
 
-    private static int misplacedTiles = 0;
-
-    static boolean allTilesInPlace(){
-        return misplacedTiles == 0;
-    }
-    static int getMisplacedTiles(){
-        return misplacedTiles;
-    }
-    static void resetAll(){
-        Arrays.asList(Tile.values()).stream().forEach(t->t.resetLocation());
-        misplacedTiles=0;
-    }
-
-    private final int tileNumber;
+    private int value;
     private int row = 0;
     private int col = 0;
+    private int dim = 0;
 
-    Tile(int n) {
-        this.tileNumber = n;
+    public Tile(int dim, int value){
+        this.dim = dim;
+        this.value = value;
         resetLocation();
     }
 
-    void resetLocation(){
-        row = (tileNumber-1) / 4;
-        col = (tileNumber-1) % 4;
+    public int getValue() {
+        return value;
     }
 
-    void swapWith(Tile t){
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    private void resetLocation(){
+        row = (value-1) / dim;
+        col = (value-1) % dim;
+    }
+
+    public int swapWith(Tile t){
         int tmpR = row;
         int tmpC = col;
-        this.setLocation(t.getRow(), t.getCol());
-        t.setLocation(tmpR, tmpC);
+        return this.setLocation(t.getRow(), t.getCol()) + t.setLocation(tmpR, tmpC);
     }
 
-    void setLocation(int row, int col){
+    private int setLocation(int row, int col){
         boolean wasInPlace = !isMisplaced();
         this.row = row;
         this.col = col;
         boolean misplaced = isMisplaced();
         if (!misplaced){
             //tile is back to its place
-            misplacedTiles--;
+            return -1;
         } else if (wasInPlace){
             //tile was just moved from its place
-            misplacedTiles++;
+            return 1;
         }
+        return 0;
     }
 
-    public int getRow(){
-        return row;
-    }
-
-    public int getCol(){
-        return col;
-    }
-
-    public int getValue(){
-        return tileNumber;
-    }
-
-    boolean isMisplaced(){
-        return row != (tileNumber-1) / 4 || col != (tileNumber-1) % 4;
+    public boolean isMisplaced(){
+        return row != (value-1) / dim || col != (value-1) % dim;
     }
 
     public String getDisplayValue() {
-        return tileNumber == 16 ? "" : ""+tileNumber;
+        return value == dim*dim ? "" : ""+value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Tile other = (Tile) obj;
+
+        return this.getValue() == other.getValue();
     }
 }

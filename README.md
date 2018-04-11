@@ -17,9 +17,9 @@ $ cd puzzle-15
 
 ### Textual UI
 
-Run the following script
+Run the following script to get a 4X4 board in textual UI:
 ```
-$ ./run.sh
+$ ./run.sh text 4
 ```
 
 The project will be built using gradle so it might take a while only at the first time.
@@ -40,7 +40,7 @@ Possible commands:
 ```
 
 ### Graphical UI
-Run the following script
+Run the following script to get a GUI board of 7X7 (or 4X4 if it is run with no parameters):
 ```
-$ ./gui-run.sh
+$ ./run.sh gui 7
 ```

@@ -7,12 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import com.puzzle15.board.Consts;
-import com.puzzle15.board.Puzzle15Board;
 import com.puzzle15.board.Tile;
+import com.puzzle15.board.Puzzle15Board;
 
 public class GraphicalUI implements ActionListener, UI {
 
-	private final static Tile EMPTY_TILE = Tile.TILE_16;
+	//private final static Tile EMPTY_TILE = Tile.TILE_16;
 	private JFrame window = new JFrame("Puzzle15");
 
 	JButton[][] buttonsGrid = null; 
@@ -26,15 +26,15 @@ public class GraphicalUI implements ActionListener, UI {
 		JButton button = (JButton)a.getSource();
 		String buttonName = button.getName();
 		String buttonText = button.getText();
-		Tile t = Tile.valueOf("TILE_"+buttonName);
+		Tile t = board.getTile(buttonName);
 
-		int targetRow = EMPTY_TILE.getRow();
-		int targetCol = EMPTY_TILE.getCol();
+		int targetRow = board.getEmptyTile().getRow();
+		int targetCol = board.getEmptyTile().getCol();
 
 		boolean legalMove = this.board.moveTile(t);
 		if (legalMove) {
-			button.setText(EMPTY_TILE.getDisplayValue());
-			button.setName("" + EMPTY_TILE.getValue());
+			button.setText(board.getEmptyTile().getDisplayValue());
+			button.setName("" + board.getEmptyTile().getValue());
 			buttonsGrid[targetRow][targetCol].setName(buttonName);
 			buttonsGrid[targetRow][targetCol].setText(buttonText);
 		}
@@ -46,14 +46,14 @@ public class GraphicalUI implements ActionListener, UI {
 
 	@Override
 	public void start() {
-		buttonsGrid = new JButton[Consts.SIZE][Consts.SIZE];
+		buttonsGrid = new JButton[board.getDim()][board.getDim()];
 
 		window.setSize(300, 300);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setLayout(new GridLayout(Consts.SIZE, Consts.SIZE));
+		window.setLayout(new GridLayout(board.getDim(), board.getDim()));
 
-		for (int i = 0; i < Consts.SIZE; i++) {
-			for (int j = 0; j < Consts.SIZE; j++) {
+		for (int i = 0; i < board.getDim(); i++) {
+			for (int j = 0; j < board.getDim(); j++) {
 				JButton b = new JButton("");
 				b.setName(""+board.getTile(i,j).getValue());
 				b.addActionListener(this);

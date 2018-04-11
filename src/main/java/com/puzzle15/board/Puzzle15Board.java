@@ -1,24 +1,50 @@
 package com.puzzle15.board;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import static com.puzzle15.board.Consts.SIZE;
-import static com.puzzle15.board.Tile.*;
+import java.util.*;
 
 public class Puzzle15Board {
 
-    private final static Tile EMPTY_TILE = Tile.TILE_16;
+    private Tile emptyTile = null;
 
-    private Tile[][] board = {
-            { TILE_1, TILE_2, TILE_3, TILE_4 },
-            { TILE_5, TILE_6, TILE_7, TILE_8 },
-            { TILE_9, TILE_10, TILE_11, TILE_12 },
-            { TILE_13, TILE_14, TILE_15, EMPTY_TILE },
-    };
+    private Tile[][] board = null;
+    private int misplacedTiles = 0;
+    private Map<String, Tile> tilesMap = new HashMap(); //For easy access to tiles by their number
 
-	public void shuffle(int shuffles){
+    private int dim = 4;
+
+    /**
+     * New constructor
+     * @param dim
+     */
+    public Puzzle15Board(int dim){
+        initBoard(dim);
+    }
+
+    private void initBoard(int dim) {
+        this.dim = dim;
+        board = new Tile[dim][dim];
+
+        //Init new board
+        int v = 1;
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                board[i][j] = new Tile(dim, v);
+                tilesMap.put(""+v, board[i][j]);
+                v++;
+            }
+        }
+        this.emptyTile = board[dim-1][dim-1];
+    }
+
+    public Tile getTile(String tileNumber){
+        Tile t = this.tilesMap.get(tileNumber);
+        if (t == null){
+            throw new IllegalArgumentException(tileNumber);
+        }
+        return t;
+    }
+
+    public void shuffle(int shuffles){
 	    Random rand = new Random();
 	    Tile lastMove = null;
         for (int i=0; i<shuffles; i++){
@@ -32,13 +58,13 @@ public class Puzzle15Board {
             } else {
                 lastMove = tileToMove;
             }
-            swapTiles(EMPTY_TILE, lastMove);           //Swap between the empty tile and the chosen tile
+            swapTiles(emptyTile, lastMove);           //Swap between the empty tile and the chosen tile
         }
     }
 
     public boolean moveTile(Tile tileToMove) {
         if (canMove(tileToMove)){
-            this.swapTiles(tileToMove, EMPTY_TILE);
+            this.swapTiles(tileToMove, emptyTile);
             return true;
         } else {
             return false;
@@ -46,52 +72,54 @@ public class Puzzle15Board {
     }
 
     public boolean isGameOver(){
-        return Tile.allTilesInPlace();
+        return allTilesInPlace();
     }
+
     public int numOfMisplacedTiles(){
-        return Tile.getMisplacedTiles();
+        return getMisplacedTiles();
     }
+
     public Tile getTile(int i, int j) {
         return this.board[i][j];
     }
 
     private List<Tile> calculateMovableTiles() {
 	    List<Tile> result = new ArrayList<>();
-	    if (EMPTY_TILE.getCol() < SIZE-1){
-	        result.add(board[EMPTY_TILE.getRow()][EMPTY_TILE.getCol()+1]);
+	    if (emptyTile.getCol() < dim-1){
+	        result.add(board[emptyTile.getRow()][emptyTile.getCol()+1]);
         }
-        if (EMPTY_TILE.getCol() > 0){
-            result.add(board[EMPTY_TILE.getRow()][EMPTY_TILE.getCol()-1]);
+        if (emptyTile.getCol() > 0){
+            result.add(board[emptyTile.getRow()][emptyTile.getCol()-1]);
         }
-        if (EMPTY_TILE.getRow() < SIZE-1){
-            result.add(board[EMPTY_TILE.getRow()+1][EMPTY_TILE.getCol()]);
+        if (emptyTile.getRow() < dim-1){
+            result.add(board[emptyTile.getRow()+1][emptyTile.getCol()]);
         }
-        if (EMPTY_TILE.getRow() > 0){
-            result.add(board[EMPTY_TILE.getRow()-1][EMPTY_TILE.getCol()]);
+        if (emptyTile.getRow() > 0){
+            result.add(board[emptyTile.getRow()-1][emptyTile.getCol()]);
         }
 	    return result;
     }
 
     private boolean canMove(Tile tileToMove) {
-        if (tileToMove == EMPTY_TILE) {return false;}
+        if (tileToMove == emptyTile) {return false;}
 
 	    int row = tileToMove.getRow();
 	    int col = tileToMove.getCol();
 
 	    //Verify that a tile is adjacent to the empty tile and can actually move
 
-	    if (row == EMPTY_TILE.getRow()){
-	        return col-1 == EMPTY_TILE.getCol() || col+1 == EMPTY_TILE.getCol();
+	    if (row == emptyTile.getRow()){
+	        return col-1 == emptyTile.getCol() || col+1 == emptyTile.getCol();
         }
-        if (col == EMPTY_TILE.getCol()){
-            return row-1 == EMPTY_TILE.getRow() || row+1 == EMPTY_TILE.getRow();
+        if (col == emptyTile.getCol()){
+            return row-1 == emptyTile.getRow() || row+1 == emptyTile.getRow();
         }
 
 	    return false;
     }
 
     private void swapTiles(Tile t1, Tile t2){
-        t1.swapWith(t2);
+        this.misplacedTiles += t1.swapWith(t2);
         board[t1.getRow()][t1.getCol()] = t1;
         board[t2.getRow()][t2.getCol()] = t2;
     }
@@ -99,9 +127,9 @@ public class Puzzle15Board {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                sb.append(board[i][j] == Tile.TILE_16 ? " __" :  (board[i][j].getValue() > 9 ? " "+board[i][j].getValue() : "  "+board[i][j].getValue()) );
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                sb.append(board[i][j] == emptyTile ? " __" :  (board[i][j].getValue() > 9 ? " "+board[i][j].getValue() : "  "+board[i][j].getValue()) );
             }
             sb.append('\n');
         }
@@ -109,6 +137,21 @@ public class Puzzle15Board {
     }
 
     public void reset() {
-        Tile.resetAll();
+        this.initBoard(dim);
+    }
+
+    public boolean allTilesInPlace(){
+        return misplacedTiles == 0;
+    }
+    public int getMisplacedTiles(){
+        return misplacedTiles;
+    }
+
+    public Tile getEmptyTile() {
+        return emptyTile;
+    }
+
+    public int getDim(){
+        return dim;
     }
 }
