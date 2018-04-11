@@ -31,7 +31,7 @@ public class GameStarter {
                     ui = new TextualUI(board);
                 }
             } catch (Exception e) {
-                usage();
+                ui = null;
             }
 
         }
@@ -44,7 +44,7 @@ public class GameStarter {
     }
 
     private static void usage(){
-        System.out.println("Usage: [text|gui] [dimension]");
+        System.out.println("Usage: run.sh [text|gui] [dimension]");
     }
 
 }

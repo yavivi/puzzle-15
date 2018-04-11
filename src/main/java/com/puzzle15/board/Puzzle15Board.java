@@ -37,7 +37,11 @@ public class Puzzle15Board {
     }
 
     public Tile getTile(String tileNumber){
-        return this.tilesMap.get(tileNumber);
+        Tile t = this.tilesMap.get(tileNumber);
+        if (t == null){
+            throw new IllegalArgumentException(tileNumber);
+        }
+        return t;
     }
 
     public void shuffle(int shuffles){
