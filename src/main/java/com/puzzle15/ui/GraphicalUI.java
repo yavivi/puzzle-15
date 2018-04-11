@@ -7,12 +7,13 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import com.puzzle15.board.Consts;
+import com.puzzle15.board.NewTile;
 import com.puzzle15.board.Puzzle15Board;
 import com.puzzle15.board.Tile;
 
 public class GraphicalUI implements ActionListener, UI {
 
-	private final static Tile EMPTY_TILE = Tile.TILE_16;
+	//private final static Tile EMPTY_TILE = Tile.TILE_16;
 	private JFrame window = new JFrame("Puzzle15");
 
 	JButton[][] buttonsGrid = null; 
@@ -26,15 +27,15 @@ public class GraphicalUI implements ActionListener, UI {
 		JButton button = (JButton)a.getSource();
 		String buttonName = button.getName();
 		String buttonText = button.getText();
-		Tile t = Tile.valueOf("TILE_"+buttonName);
+		NewTile t = board.getTile(buttonName);
 
-		int targetRow = EMPTY_TILE.getRow();
-		int targetCol = EMPTY_TILE.getCol();
+		int targetRow = board.getEmptyTile().getRow();
+		int targetCol = board.getEmptyTile().getCol();
 
 		boolean legalMove = this.board.moveTile(t);
 		if (legalMove) {
-			button.setText(EMPTY_TILE.getDisplayValue());
-			button.setName("" + EMPTY_TILE.getValue());
+			button.setText(board.getEmptyTile().getDisplayValue());
+			button.setName("" + board.getEmptyTile().getValue());
 			buttonsGrid[targetRow][targetCol].setName(buttonName);
 			buttonsGrid[targetRow][targetCol].setText(buttonText);
 		}

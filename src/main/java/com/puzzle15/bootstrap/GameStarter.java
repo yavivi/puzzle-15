@@ -11,7 +11,7 @@ import com.puzzle15.ui.UI;
 public class GameStarter {
 
     public static void main(String[] args) {
-        Puzzle15Board board = new Puzzle15Board();
+        Puzzle15Board board = new Puzzle15Board(6);
         UI ui = null;
 
         if (args.length == 1 && "gui".equals(args[0])){

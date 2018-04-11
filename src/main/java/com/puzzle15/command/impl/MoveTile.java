@@ -1,6 +1,7 @@
 package com.puzzle15.command.impl;
 
 import com.puzzle15.board.Consts;
+import com.puzzle15.board.NewTile;
 import com.puzzle15.board.Puzzle15Board;
 import com.puzzle15.board.Tile;
 import com.puzzle15.command.api.Command;
@@ -18,9 +19,11 @@ public class MoveTile extends Command<String> {
 
     @Override
     public Result execute() {
-        Tile tileToMove = null;
+        NewTile tileToMove = null;
         try {
-            tileToMove = Tile.valueOf(Consts.TILE_PREFIX + this.commandInput);
+
+            tileToMove = board.getTile(this.commandInput);
+
         } catch (IllegalArgumentException e) {
             return new Result(false, "No such tile or invalid command |" + commandInput + "|");
         }

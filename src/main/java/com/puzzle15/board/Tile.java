@@ -31,6 +31,7 @@ public enum Tile {
     static int getMisplacedTiles(){
         return misplacedTiles;
     }
+
     static void resetAll(){
         Arrays.asList(Tile.values()).stream().forEach(t->t.resetLocation());
         misplacedTiles=0;
